@@ -62,7 +62,7 @@ def resumir_texto(texto, max_input_length=512, max_output_length=300, num_senten
     return " ".join(resumos)
 
 
-# Função para gerar resumos longos
+# Função que utiliza o modelo para resumir os pedaços de texto recebidos
 def resumir_pedaco(texto, max_input_length=512, max_output_length=300):
     inputs = tokenizer(
         texto,
