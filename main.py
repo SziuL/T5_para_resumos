@@ -110,7 +110,7 @@ def salvar_resumo_em_arquivo(resumo, nome_arquivo="resumo_gerado.txt"):
         with open(nome_arquivo, "w", encoding="utf-8") as file:
             file.write("Resumo Gerado:\n")
             file.write("=" * 40 + "\n")
-            for i, char in enumerate(resumo):
+            for i in enumerate(resumo):
                 file.write(resumo[i])
                 count_cols += 1
                 if count_cols == 130:
