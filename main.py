@@ -1,9 +1,6 @@
 import texto_extracao as te
 from transformers import TFAutoModelForSeq2SeqLM, AutoTokenizer
 import re
-import os
-
-os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 
 # Carregar o tokenizer e o modelo treinado
 path_modelo = "./t5_small_finetuned"
@@ -13,7 +10,7 @@ tokenizer = AutoTokenizer.from_pretrained(path_modelo)
 
 def dividir_texto_em_sentencas(texto, num_sentencas=4):
     """
-    Função que divide o texto em trechos contendo até num_sentences sentenças
+    Função que divide o texto em trechos contendo até num_sentencas sentenças
     (baseado em pontos finais).
     """
     # Expressão regular para identificar sentenças (terminadas em ponto final)
@@ -29,11 +26,11 @@ def dividir_texto_em_sentencas(texto, num_sentencas=4):
         if final_de_frase.match(char):  # Se encontrarmos um ponto final
             count_sentencas += 1
 
-        # Quando encontrarmos duas sentenças completas (dois pontos finais)
+        # Quando encontrarmos quatro sentenças completas (quatro pontos finais)
         if count_sentencas == num_sentencas:
             sentencas.append(pedaco_atual.strip())  # Adicionar o trecho
-            pedaco_atual = ""  # Reiniciar o trecho
-            count_sentencas = 0 # Reiniciar contador de sentenças
+            pedaco_atual = ""  # Reiniciar o pedaço atual
+            count_sentencas = 0  # Reiniciar contador de sentenças
 
     # Adicionar o último pedaço, se houver
     if pedaco_atual:
@@ -49,7 +46,7 @@ def resumir_texto(texto, max_input_length=512, max_output_length=300, num_senten
     """
     resumos = []
 
-    # Dividir o texto em partes baseadas em duas sentenças
+    # Dividir o texto em partes baseadas em quatro sentenças
     pedacos_de_texto = dividir_texto_em_sentencas(texto, num_sentencas)
 
     # Fazer um resumo para cada parte do texto
@@ -88,7 +85,7 @@ def resumir_pedaco(texto, max_input_length=512, max_output_length=300):
         print(
             ids_resumo.shape
         )  # Formato do batch (x, y) do resumo gerado onde x é a quantidade
-        # de amostras analizadas e y é a quantidade de tokens referente a amostra x.
+        # de amostras analizadas e y é a quantidade de tokens do resumo.
 
         # Verificar os IDs do resumo gerado
         if ids_resumo.shape[1] == 0:
@@ -113,7 +110,7 @@ def salvar_resumo_em_arquivo(resumo, nome_arquivo="resumo_gerado.txt"):
         with open(nome_arquivo, "w", encoding="utf-8") as file:
             file.write("Resumo Gerado:\n")
             file.write("=" * 40 + "\n")
-            for i,char in enumerate(resumo):
+            for i, char in enumerate(resumo):
                 file.write(resumo[i])
                 count_cols += 1
                 if count_cols == 130:
@@ -138,7 +135,7 @@ def main():
         f"\nTexto extraído:\n{texto[:500]}..."
     )  # Mostra os primeiros 500 caracteres do texto
 
-    # Resumir o texto extraído (limitar a 2000 caracteres)
+    # Resumir o texto extraído
     resumo = resumir_texto(texto)
 
     if resumo:
