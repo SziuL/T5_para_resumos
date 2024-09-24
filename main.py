@@ -21,7 +21,7 @@ def dividir_texto_em_sentencas(texto, num_sentencas=4):
     count_sentencas = 0
 
     # Iterar sobre cada caractere no texto
-    for char in enumerate(texto):
+    for i,char in enumerate(texto):
         pedaco_atual += char
         if final_de_frase.match(char):  # Se encontrarmos um ponto final
             count_sentencas += 1
@@ -110,7 +110,7 @@ def salvar_resumo_em_arquivo(resumo, nome_arquivo="resumo_gerado.txt"):
         with open(nome_arquivo, "w", encoding="utf-8") as file:
             file.write("Resumo Gerado:\n")
             file.write("=" * 40 + "\n")
-            for i in enumerate(resumo):
+            for i,char in enumerate(resumo):
                 file.write(resumo[i])
                 count_cols += 1
                 if count_cols == 130:
