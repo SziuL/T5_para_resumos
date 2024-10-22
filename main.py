@@ -39,7 +39,7 @@ def dividir_texto_em_sentencas(texto, num_sentencas=4):
     return sentencas
 
 
-def resumir_texto(texto, max_input_length=512, max_output_length=300, num_sentencas=2):
+def resumir_texto(texto, max_input_length=512, max_output_length=300, num_sentencas=4):
     """
     Função que divide o texto em partes de até num_sentences sentenças,
     faz um resumo de cada parte e junta os resumos.
